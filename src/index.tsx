@@ -3,13 +3,31 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import PokemonForm from './components/PokemonForm/PokemonForm';
+import { APP_ROUTE } from './shared/constants/app-routes';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<App />} />
+          <Route path={APP_ROUTE.UPDATE_POKEMON} element={<PokemonForm />} />
+          <Route path={APP_ROUTE.CREATE_POKEMON} element={<PokemonForm />} />
+        </Routes>
+      </BrowserRouter>
+      ;
+    </Provider>
   </React.StrictMode>
 );
 

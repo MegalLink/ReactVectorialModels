@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
 import './App.css';
 
-function App() {
+import HorizontalTabs from './components/Tabs/HorizontalTab';
+import Header from './components/Header/Header';
+import { useAppDispatch } from './store/store-hook';
+import { getPokemons } from './store/reducers/pokemon-reducer';
+
+export default function App() {
+  const dispatcher = useAppDispatch();
+  useEffect(() => {
+    //simulate timeout to see spiner :3
+    setTimeout(() => dispatcher(getPokemons()), 2000);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      <HorizontalTabs />
     </div>
   );
 }
-
-export default App;
