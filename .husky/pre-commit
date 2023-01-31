@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+RED="\e[31m"
+YELLOW="\e[33m"
+GREEN="\e[32m"
+ENDCOLOR="\e[0m"
+echo "Running pre-commit"
+echo "Running format..."
+format=$(npm run format)
+if [ $? -eq 0 ]; then
+   printf "${GREEN} format success ${ENDCOLOR}\n"
+else
+   printf "${RED} format have failed ${ENDCOLOR}\n"
+   echo "${format}" 
+fi
+echo "Running lint..."
+lint=$(npm run lint)
+if [ $? -eq 0 ]; then
+   printf "${GREEN} lint success ${ENDCOLOR}\n"
+else
+   printf "${YELLOW} lint have failed ${ENDCOLOR}\n"
+   echo "${lint}" 
+fi
+echo "Running coverage..."
+test=$(npm run coverage)
+if [ $? -eq 0 ]; then
+   printf "${GREEN} all files covered${ENDCOLOR}\n"
+else
+   printf "${RED} some file(s) is not being covered ${ENDCOLOR}\n"
+   echo "${test}" 
+fi
+echo "Running tests..."
+test=$(npm run test)
+if [ $? -eq 0 ]; then
+   printf "${GREEN} all tests are passing${ENDCOLOR}\n"
+else
+   printf "${RED} some test have failed ${ENDCOLOR}\n"
+   echo "${test}" 
+fi
+git add -A .

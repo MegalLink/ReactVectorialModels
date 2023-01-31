@@ -1,22 +1,22 @@
-import React from "react";
-import { Grid, TextField, Autocomplete } from "@mui/material";
-import { Controller, useFormContext } from "react-hook-form";
-import Card from "@mui/material/Card";
+import React from 'react'
+import { Grid, TextField, Autocomplete } from '@mui/material'
+import { Controller, useFormContext } from 'react-hook-form'
+import Card from '@mui/material/Card'
 
 const stats = [
-  { value: 65, label: "A" },
-  { value: 66, label: "B" },
-  { value: 67, label: "C" },
-];
+  { value: 65, label: 'A' },
+  { value: 66, label: 'B' },
+  { value: 67, label: 'C' },
+]
 
 export default function SectionStats() {
-  const { control } = useFormContext();
+  const { control } = useFormContext()
   return (
-    <Card sx={{ p: "10px", mt: "10px" }}>
+    <Card sx={{ p: '10px', mt: '10px' }}>
       <Grid item xs={12}>
         <Controller
           control={control}
-          name="stats"
+          name='stats'
           render={({ field: { ref, onChange, ...field } }) => (
             <Autocomplete
               multiple
@@ -30,8 +30,8 @@ export default function SectionStats() {
                   {...params}
                   fullWidth
                   inputRef={ref}
-                  variant="filled"
-                  label="stats"
+                  variant='filled'
+                  label='stats'
                 />
               )}
             />
@@ -39,5 +39,5 @@ export default function SectionStats() {
         />
       </Grid>
     </Card>
-  );
+  )
 }

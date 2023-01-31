@@ -1,31 +1,30 @@
-import React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import CreateIcon from "@mui/icons-material/Create";
-import { useAppSelector } from "../../store/store-hook";
-import { GetPokemonResponse } from "../../interfaces/get-pokemon-response";
-import CardPokemon from "./CardPokemon/CardPokemon";
-import { useNavigate } from "react-router-dom";
+import React from 'react'
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import Typography from '@mui/material/Typography'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Button from '@mui/material/Button'
+import Stack from '@mui/material/Stack'
+import CreateIcon from '@mui/icons-material/Create'
+import { useAppSelector } from '../../store/store-hook'
+import { GetPokemonResponse } from '../../interfaces/get-pokemon-response'
+import CardPokemon from './CardPokemon/CardPokemon'
+import { useNavigate } from 'react-router-dom'
 
 interface AccordionPokemonProps {
-  pokemons: GetPokemonResponse[];
+  pokemons: GetPokemonResponse[]
 }
 
 function AccordionPokemon({ pokemons }: AccordionPokemonProps) {
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [expanded, setExpanded] = React.useState<string | false>(false)
 
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false)
+  }
 
   if (pokemons.length === 0) {
-    return <Typography sx={{ width: "100%" }}>Add a pokemon :D</Typography>;
+    return <Typography sx={{ width: '100%' }}>Add a pokemon :D</Typography>
   }
 
   const accordionList = pokemons.map((pokemon) => {
@@ -40,32 +39,30 @@ function AccordionPokemon({ pokemons }: AccordionPokemonProps) {
           aria-controls={`panel-${pokemon.name}-content`}
           id={`panel-${pokemon.name}-header`}
         >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>
-            {pokemon.name}
-          </Typography>
-          <Typography sx={{ color: "text.secondary" }}>{pokemon.id}</Typography>
+          <Typography sx={{ width: '33%', flexShrink: 0 }}>{pokemon.name}</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{pokemon.id}</Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ display: "flex", justifyContent: "center" }}>
+        <AccordionDetails sx={{ display: 'flex', justifyContent: 'center' }}>
           <CardPokemon pokemon={pokemon} />
         </AccordionDetails>
       </Accordion>
-    );
-  });
+    )
+  })
 
-  return <>{accordionList}</>;
+  return <>{accordionList}</>
 }
 
 export default function MyPokemonsAccordion() {
-  const { savedPokemons } = useAppSelector((store) => store.pokemon);
-  const navigate = useNavigate();
+  const { savedPokemons } = useAppSelector((store) => store.pokemon)
+  const navigate = useNavigate()
   return (
     <React.Fragment>
-      <Stack direction="row" spacing={2} sx={{ pb: "10px" }}>
+      <Stack direction='row' spacing={2} sx={{ pb: '10px' }}>
         <Button
-          sx={{ width: "100%" }}
-          variant="outlined"
+          sx={{ width: '100%' }}
+          variant='outlined'
           onClick={() => {
-            navigate("create");
+            navigate('create')
           }}
           startIcon={<CreateIcon />}
         >
@@ -74,5 +71,5 @@ export default function MyPokemonsAccordion() {
       </Stack>
       <AccordionPokemon pokemons={savedPokemons} />
     </React.Fragment>
-  );
+  )
 }

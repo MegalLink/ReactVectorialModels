@@ -29,6 +29,10 @@ Lodash
 - npm i --save lodash
 - npm i --save-dev @types/lodash
 
+Prettier
+
+- npm i prettier
+
 Code Linter
 
 - npm install eslint --save-dev
