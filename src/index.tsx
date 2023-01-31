@@ -1,32 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import { Provider } from 'react-redux';
-import { store } from './store/store';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import PokemonForm from './components/PokemonForm/PokemonForm';
-import { APP_ROUTE } from './shared/constants/app-routes';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import PokemonForm from "./components/PokemonForm/PokemonForm";
+import { APP_ROUTE } from "./shared/constants/app-routes";
+import { SnackbarProvider } from "notistack";
+import { SnackbarUtil } from "./utils/snack-bar";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<App />} />
-          <Route path={APP_ROUTE.UPDATE_POKEMON} element={<PokemonForm />} />
-          <Route path={APP_ROUTE.CREATE_POKEMON} element={<PokemonForm />} />
-        </Routes>
-      </BrowserRouter>
-      ;
+      <SnackbarProvider maxSnack={5} autoHideDuration={2000}>
+        <SnackbarUtil />
+        <BrowserRouter>
+          <Routes>
+            <Route index element={<App />} />
+            <Route path={APP_ROUTE.UPDATE_POKEMON} element={<PokemonForm />} />
+            <Route path={APP_ROUTE.CREATE_POKEMON} element={<PokemonForm />} />
+          </Routes>
+        </BrowserRouter>
+      </SnackbarProvider>
     </Provider>
   </React.StrictMode>
 );

@@ -11,6 +11,7 @@ import {
   getPokemonByName,
   resetPokemonToEdit,
 } from "../../store/reducers/pokemon-reducer";
+import SectionStats from "./SectionStats";
 
 const defaultPokemon: GetPokemonResponse = {
   height: 0,
@@ -67,7 +68,7 @@ export default function PokemonForm() {
         <HeaderForm title={"Create"} />
         <Box>
           <SectionInformation />
-
+          <SectionStats />
           <Button
             type="button"
             variant="contained"

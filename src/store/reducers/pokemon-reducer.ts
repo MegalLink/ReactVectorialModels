@@ -8,7 +8,8 @@ import {
   deleteLocalPokemon,
   getLocalPokemons,
   setLocalPokemon,
-} from "../../local-storage/local-storage";
+} from "../../utils/local-storage/pokemon";
+import SnackbarUtil from "../../utils/snack-bar";
 
 const localSavedPokemons = getLocalPokemons();
 const defaultPokemon: GetPokemonResponse = {
@@ -84,6 +85,7 @@ const pokemonSlice = createSlice({
     builder
       .addCase(getPokemons.fulfilled, (state: PokemonAppState, action) => {
         state.pokemonsList = action.payload.results;
+        SnackbarUtil.success("Success 🎉");
       })
       .addCase(getPokemonByUrl.fulfilled, (state, action) => {
         setLocalPokemon(action.payload);

@@ -1,11 +1,11 @@
-import { GetPokemonResponse } from '../interfaces/get-pokemon-response';
+import { GetPokemonResponse } from "../../interfaces/get-pokemon-response";
 
 enum LocalStorageKeys {
-  POKEMON_INFO = 'pokemon/pokemon-response',
+  POKEMON_INFO = "pokemon/pokemon-response",
 }
 
 export const getLocalPokemons = (): GetPokemonResponse[] => {
-  const emptyListring = '[]';
+  const emptyListring = "[]";
   return JSON.parse(
     localStorage.getItem(LocalStorageKeys.POKEMON_INFO) ?? emptyListring
   );
