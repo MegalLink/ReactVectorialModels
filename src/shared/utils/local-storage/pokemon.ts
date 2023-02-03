@@ -1,4 +1,4 @@
-import { GetPokemonResponse } from '../../../interfaces/get-pokemon-response'
+import { GetPokemonResponse } from '../../interfaces/get-pokemon-response'
 
 enum LocalStorageKeys {
   POKEMON_INFO = 'pokemon/pokemon-response',

@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 import { Box, Button } from '@mui/material'
-import SectionInformation from '../PokemonForm/SectionInformation'
-import HeaderForm from '../PokemonForm/HeaderForm'
-import { GetPokemonResponse } from '../../interfaces/get-pokemon-response'
+import SectionInformation from '../SectionFormInformation/SectionFormInformation'
+import { HeaderForm } from '../HeaderForm/HeaderForm'
+import { GetPokemonResponse } from '../../shared/interfaces/get-pokemon-response'
 import { defaultTo, isEmpty } from 'lodash'
 import { useParams } from 'react-router-dom'
 import { useAppSelector, useAppDispatch } from '../../store/store-hook'
-import { getPokemonByName, resetPokemonToEdit } from '../../store/reducers/pokemon-reducer'
-import SectionStats from './SectionStats'
+import { resetPokemonToEdit } from '../../store/reducers/pokemon-reducer'
+import SectionStats from '../SectionFormStats/SectionFormStats'
+import { getPokemonByName } from '../../store/reducers/pokemon-thunks'
 
 const defaultPokemon: GetPokemonResponse = {
   height: 0,

@@ -6,7 +6,8 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { useAppSelector } from '../../store/store-hook'
 import Chip from '@mui/material/Chip'
-export default function Header() {
+
+export function MainHeader() {
   const { savedPokemons } = useAppSelector((store) => store.pokemon)
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -22,6 +23,7 @@ export default function Header() {
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             Pokemon App
           </Typography>
+
           <Chip label={savedPokemons.length} color='warning' />
         </Toolbar>
       </AppBar>

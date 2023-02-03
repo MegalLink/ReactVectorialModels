@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import ListPokemon from './ListPokemon'
 import { useAppDispatch, useAppSelector } from '../../store/store-hook'
-import { getPokemons } from '../../store/reducers/pokemon-reducer'
+import { getPokemons } from '../../store/reducers/pokemon-thunks'
 
 export default function SelectPokemon() {
   const dispatcher = useAppDispatch()
@@ -13,7 +13,6 @@ export default function SelectPokemon() {
 
   useEffect(() => {
     // simulate timeout to see spiner :3
-    console.log('effect')
     setTimeout(() => dispatcher(getPokemons()), 2000)
   }, [])
 

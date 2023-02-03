@@ -1,4 +1,4 @@
-import { GetPokemonResponse } from '../../../interfaces/get-pokemon-response'
+import { GetPokemonResponse } from '../../shared/interfaces/get-pokemon-response'
 
 import React from 'react'
 import Card from '@mui/material/Card'
@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import { useCardPokemon } from '../../MyPokemon/CardPokemon/useCardPokemon'
+import { useCardPokemon } from './useCardPokemon'
 
 interface CardPokemonProps {
   pokemon: GetPokemonResponse

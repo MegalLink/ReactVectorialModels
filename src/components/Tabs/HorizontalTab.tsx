@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import TabPanel from './TabPanel'
 import SelectPokemon from '../PokemonList/SelectPokemons'
-import MyPokemonsAccordion from '../MyPokemon/MyPokemons'
+import { MyPokemonsAccordion } from '../MyPokemon/MyPokemons'
 
 function a11yProps(index: number) {
   return {
@@ -13,7 +13,7 @@ function a11yProps(index: number) {
   }
 }
 
-export default function HorizontalTabs() {
+export function HorizontalTabs() {
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

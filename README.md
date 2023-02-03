@@ -50,6 +50,10 @@ Notistack
 
 - npm i notistack
 
+For unit tests Mockery
+
+- npm i ts-mockery
+
 # Style code write conventions React:
 
 https://google.github.io/styleguide/jsguide.html#features-objects-enums
@@ -93,7 +97,7 @@ src/shared/constants/api-routes.ts
 ### Enums
 
 Component Enums to use like labels or other enum values from component should go in route like
-src/shared/enums/components/header-enum.ts
+src/shared/enums/header-enum.ts
 
 other enums should be like
 src/shared/enums/countries-enum.ts or just countries
@@ -101,9 +105,9 @@ src/shared/enums/countries-enum.ts or just countries
 enum convention
 
 export enum Countries {
-BRAZIL = "Brazil",
-CHILE ="Chile",
-ESTADOS_UNIDOS = "Estados unidos"
+Brazil = "Brazil",
+Chile ="Chile",
+UnitedStates = "Estados unidos"
 }
 
 export enum LogLevel {

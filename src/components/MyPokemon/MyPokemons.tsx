@@ -8,8 +8,8 @@ import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import CreateIcon from '@mui/icons-material/Create'
 import { useAppSelector } from '../../store/store-hook'
-import { GetPokemonResponse } from '../../interfaces/get-pokemon-response'
-import CardPokemon from './CardPokemon/CardPokemon'
+import { GetPokemonResponse } from '../../shared/interfaces/get-pokemon-response'
+import CardPokemon from '../CardPokemon/CardPokemon'
 import { useNavigate } from 'react-router-dom'
 
 interface AccordionPokemonProps {
@@ -52,7 +52,7 @@ function AccordionPokemon({ pokemons }: AccordionPokemonProps) {
   return <>{accordionList}</>
 }
 
-export default function MyPokemonsAccordion() {
+export function MyPokemonsAccordion() {
   const { savedPokemons } = useAppSelector((store) => store.pokemon)
   const navigate = useNavigate()
   return (

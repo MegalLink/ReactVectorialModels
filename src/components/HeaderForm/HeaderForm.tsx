@@ -6,14 +6,13 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useNavigate } from 'react-router-dom'
-import { useFormContext } from 'react-hook-form'
+
 interface HeaderFormProps {
   title: string
 }
 
-export default function HeaderForm({ title }: HeaderFormProps) {
+export function HeaderForm({ title }: HeaderFormProps) {
   const navigate = useNavigate()
-  const { reset } = useFormContext()
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static' sx={{ mb: 2 }}>
@@ -29,9 +28,9 @@ export default function HeaderForm({ title }: HeaderFormProps) {
             {title}
           </Typography>
           <IconButton
+            data-testid='go-back'
             aria-label='go-back'
             onClick={() => {
-              reset()
               navigate(-1)
             }}
           >

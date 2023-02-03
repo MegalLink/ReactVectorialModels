@@ -1,12 +1,12 @@
 import React from 'react'
 
-import HorizontalTabs from '../../components/Tabs/HorizontalTab'
-import Header from '../../components/Header/Header'
+import { HorizontalTabs } from '../../components/Tabs/HorizontalTab'
+import { MainHeader } from '../../components/MainHeader/MainHeader'
 
 export function MainPage() {
   return (
     <div>
-      <Header />
+      <MainHeader />
       <HorizontalTabs />
     </div>
   )
