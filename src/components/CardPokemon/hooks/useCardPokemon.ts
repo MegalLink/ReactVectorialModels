@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom'
-import { GetPokemonResponse } from '../../shared/interfaces/get-pokemon-response'
-import { APP_ROUTE } from '../../shared/constants/app-routes'
-import { deletePokemon } from '../../store/reducers/pokemon-reducer'
-import { useAppDispatch } from '../../store/store-hook'
+import { GetPokemonResponse } from '../../../shared/interfaces/get-pokemon-response'
+import { APP_ROUTE } from '../../../shared/constants/app-routes'
+import { deletePokemon } from '../../../store/reducers/pokemon-reducer'
+import { useAppDispatch } from '../../../store/store-hook'
 
-interface UseCardPokemon {
+export interface UseCardPokemon {
   handleUpdate: (pokemonName: string) => void
   handleDelete: () => void
 }

@@ -11,7 +11,6 @@ describe('Test Loading component', () => {
   })
   it('should render component', () => {
     renderComponent()
-    console.log(screen)
     expect(screen.getByRole('progressbar')).toBeInTheDocument()
   })
 })

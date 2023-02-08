@@ -7,13 +7,13 @@ import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
-import { useCardPokemon } from './useCardPokemon'
+import { useCardPokemon } from './hooks/useCardPokemon'
 
 interface CardPokemonProps {
   pokemon: GetPokemonResponse
 }
 
-export default function CardPokemon({ pokemon }: CardPokemonProps) {
+export function CardPokemon({ pokemon }: CardPokemonProps) {
   const { handleDelete, handleUpdate } = useCardPokemon(pokemon)
 
   return (
@@ -39,7 +39,7 @@ export default function CardPokemon({ pokemon }: CardPokemonProps) {
         <Button size='small' onClick={() => handleUpdate(pokemon.name)}>
           Modificar
         </Button>
-        <Button size='small' onClick={handleDelete}>
+        <Button size='small' onClick={() => handleDelete()}>
           Eliminar
         </Button>
       </CardActions>
