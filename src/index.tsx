@@ -24,8 +24,8 @@ root.render(
         <BrowserRouter>
           <Routes>
             <Route index element={<MainPage />} />
-            <Route path={APP_ROUTE.UPDATE_POKEMON} element={<FormPokemonPage />} />
-            <Route path={APP_ROUTE.CREATE_POKEMON} element={<FormPokemonPage />} />
+            <Route path={APP_ROUTE.updatePokemon} element={<FormPokemonPage />} />
+            <Route path={APP_ROUTE.createPokemon} element={<FormPokemonPage />} />
           </Routes>
         </BrowserRouter>
       </SnackbarProvider>

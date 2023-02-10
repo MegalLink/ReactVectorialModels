@@ -9,26 +9,9 @@ import {
 } from '../../shared/utils/local-storage/pokemon'
 import SnackbarUtil from '../../shared/utils/snack-bar'
 import { getPokemonByName, getPokemonByUrl, getPokemons } from './pokemon-thunks'
+import { defaultBasicModal, defaultPokemon } from '../../shared/constants/app-state'
 
 const localSavedPokemons = getLocalPokemons()
-export const defaultPokemon: GetPokemonResponse = {
-  height: 0,
-  id: 0,
-  name: '',
-  weight: 0,
-  sprites: { other: { dream_world: { front_default: '' } } },
-  stats: [],
-  types: [],
-}
-export const defaultBasicModal: BasicModal = {
-  handlePrimaryButton: () => {},
-  handleSecondaryButton: () => {},
-  title: '',
-  description: '',
-  primaryBtnText: '',
-  secondaryBtnText: '',
-  isOpen: false,
-}
 
 export const initialState: PokemonAppState = {
   pokemonsList: [],
@@ -46,10 +29,15 @@ const pokemonSlice = createSlice({
       state.savedPokemons = getLocalPokemons()
     },
     setBasicModal(state, action: PayloadAction<BasicModal>) {
+      // necessary restore first entire modal to avoid combined modals at call
+      state.basicModal = defaultBasicModal
       state.basicModal = action.payload
     },
     resetPokemonToEdit(state) {
       state.pokemonToEdit = defaultPokemon
+    },
+    dismissModal(state) {
+      state.basicModal.isOpen = false
     },
   },
   extraReducers: (builder) => {
@@ -68,5 +56,6 @@ const pokemonSlice = createSlice({
   },
 })
 
-export const { deletePokemon, resetPokemonToEdit, setBasicModal } = pokemonSlice.actions
+export const { deletePokemon, resetPokemonToEdit, setBasicModal, dismissModal } =
+  pokemonSlice.actions
 export default pokemonSlice.reducer

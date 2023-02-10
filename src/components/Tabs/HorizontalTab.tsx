@@ -6,7 +6,7 @@ import TabPanel from './TabPanel'
 import SelectPokemon from '../PokemonList/SelectPokemons'
 import { MyPokemonsAccordion } from '../MyPokemon/MyPokemons'
 
-function a11yProps(index: number) {
+function selectTab(index: number) {
   return {
     id: `horizontal-tab-${index}`,
     'aria-controls': `horizontal-tabpanel-${index}`,
@@ -27,12 +27,12 @@ export function HorizontalTabs() {
         orientation='horizontal'
         value={value}
         onChange={handleChange}
-        aria-label='Horizontal tabs example'
+        aria-label='Horizontal tabs'
         sx={{ borderRight: 1, borderColor: 'divider' }}
         variant='fullWidth'
       >
-        <Tab label='Pokemon List' {...a11yProps(0)} />
-        <Tab label='My Pokemons' {...a11yProps(1)} />
+        <Tab label='Pokemon List' {...selectTab(0)} />
+        <Tab label='My Pokemons' {...selectTab(1)} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <SelectPokemon />

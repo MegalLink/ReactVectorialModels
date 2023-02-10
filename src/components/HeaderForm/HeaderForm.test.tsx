@@ -6,12 +6,6 @@ jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }))
 
-jest.mock('react-hook-form', () => ({
-  useFormContext: () => ({
-    reset: () => jest.fn(),
-  }),
-}))
-
 describe('Test FormPokemonPage component', () => {
   const mockReactRouter = () => {
     const navigate = jest.fn()
@@ -36,12 +30,13 @@ describe('Test FormPokemonPage component', () => {
     expect(screen.getByText('hello')).toBeInTheDocument()
   })
 
-  it('should call reset and navigate when back button is pressed', async () => {
-    const { navigate } = mockReactRouter()
-    renderComponent()
-    expect(screen.getByText('hello')).toBeInTheDocument()
-    fireEvent.click(screen.getByTestId('go-back'))
+  describe('actions', () => {
+    it('should call reset and navigate when back button is pressed', async () => {
+      const { navigate } = mockReactRouter()
+      renderComponent()
+      fireEvent.click(screen.getByTestId('go-back'))
 
-    await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
+      await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
+    })
   })
 })

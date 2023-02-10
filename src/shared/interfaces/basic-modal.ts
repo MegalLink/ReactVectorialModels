@@ -1,9 +1,13 @@
 export interface BasicModal {
-  handlePrimaryButton: () => void
-  handleSecondaryButton: () => void
-  title: string
-  description: string
-  primaryBtnText: string
-  secondaryBtnText: string
+  primaryButton?: ModalButton
+  secondaryButton?: ModalButton
+  handleClose?: () => void
+  title?: string
+  description?: string
   isOpen: boolean
+}
+
+export interface ModalButton {
+  btnText: string
+  handleClick: () => void
 }

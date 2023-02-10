@@ -13,6 +13,12 @@ jest.mock('../../components/MainHeader/MainHeader', () => ({
   },
 }))
 
+jest.mock('../../components/Modal/Modal', () => ({
+  Modal: () => {
+    return <div data-testid='basic-modal' />
+  },
+}))
+
 describe('Test MainPage component', () => {
   const renderComponent = () => {
     render(<MainPage />)
@@ -25,6 +31,7 @@ describe('Test MainPage component', () => {
   it('should render component', () => {
     renderComponent()
     expect(screen.getByTestId('header')).toBeInTheDocument()
+    expect(screen.getByTestId('horizontal-tab')).toBeInTheDocument()
     expect(screen.getByTestId('horizontal-tab')).toBeInTheDocument()
     // THIS TWO TOOLS ARE VERY USEFULL SO USE IT
     // DEBUG JUST PRINT IN CONSOLE WHAT THE HTML CONTAINS

@@ -1,5 +1,6 @@
 import pokemonReducer, {
   deletePokemon,
+  dismissModal,
   initialState,
   resetPokemonToEdit,
   setBasicModal,
@@ -38,6 +39,12 @@ describe('test apiReducer', () => {
     expect(pokemonReducer(initialState, setBasicModal(payload))).toEqual({
       ...initialState,
       basicModal: payload,
+    })
+  })
+
+  it('should dismiss basic modal', () => {
+    expect(pokemonReducer(initialState, dismissModal())).toEqual({
+      ...initialState,
     })
   })
 

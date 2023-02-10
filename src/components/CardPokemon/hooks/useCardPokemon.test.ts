@@ -52,7 +52,7 @@ describe('Test useCardPokemon hook', () => {
     })
 
     expect(navigate).toHaveBeenCalledTimes(1)
-    expect(navigate).toHaveBeenCalledWith(APP_ROUTE.UPDATE_POKEMON_NAVIGATE(pokemon.name))
+    expect(navigate).toHaveBeenCalledWith(APP_ROUTE.updatePokemonNavigate(pokemon.name))
   })
 
   it('should call dispatch when handleDelete function is called', () => {

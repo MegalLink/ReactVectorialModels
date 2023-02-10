@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack'
 import CreateIcon from '@mui/icons-material/Create'
 import { useAppSelector } from '../../store/store-hook'
 import { GetPokemonResponse } from '../../shared/interfaces/get-pokemon-response'
-import CardPokemon from '../CardPokemon/CardPokemon'
+import { CardPokemon } from '../CardPokemon/CardPokemon'
 import { useNavigate } from 'react-router-dom'
 
 interface AccordionPokemonProps {
@@ -17,7 +17,7 @@ interface AccordionPokemonProps {
 }
 
 function AccordionPokemon({ pokemons }: AccordionPokemonProps) {
-  const [expanded, setExpanded] = React.useState<string | false>(false)
+  const [expanded, setExpanded] = useState<string | false>(false)
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false)
@@ -35,7 +35,7 @@ function AccordionPokemon({ pokemons }: AccordionPokemonProps) {
         onChange={handleChange(pokemon.name + pokemon.id)}
       >
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMoreIcon data-testid={`${pokemon.name}-accordion`} />}
           aria-controls={`panel-${pokemon.name}-content`}
           id={`panel-${pokemon.name}-header`}
         >

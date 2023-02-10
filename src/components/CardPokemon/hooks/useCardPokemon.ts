@@ -13,7 +13,7 @@ export const useCardPokemon = (pokemon: GetPokemonResponse): UseCardPokemon => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const handleUpdate = (pokemonName: string) => {
-    navigate(APP_ROUTE.UPDATE_POKEMON_NAVIGATE(pokemonName))
+    navigate(APP_ROUTE.updatePokemonNavigate(pokemonName))
   }
   const handleDelete = () => {
     dispatch(deletePokemon(pokemon))
