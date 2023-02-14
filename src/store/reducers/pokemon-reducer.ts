@@ -43,8 +43,8 @@ const pokemonSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getPokemons.fulfilled, (state: PokemonAppState, action) => {
-        state.pokemonsList = action.payload.results
         SnackbarUtil.success('Success 🎉')
+        state.pokemonsList = action.payload.results
       })
       .addCase(getPokemonByUrl.fulfilled, (state, action) => {
         setLocalPokemon(action.payload)

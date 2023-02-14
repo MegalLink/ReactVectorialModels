@@ -4,6 +4,7 @@ import { initialState } from '../../store/reducers/pokemon-reducer'
 import { Modal } from './Modal'
 import { BasicModal } from '../../shared/interfaces/basic-modal'
 import { PokemonAppState } from '../../shared/interfaces/app-state'
+import { get } from 'lodash'
 
 jest.mock('../../store/store-hook', () => ({
   useAppSelector: jest.fn(),
@@ -41,9 +42,9 @@ describe('Test Modal component', () => {
     }
     mockStoreHooks({ basicModal: modal })
     renderComponent()
-    expect(screen.getByText(modal.title!))
-    expect(screen.getByText(modal.description!))
-    expect(screen.getByText(modal.primaryButton!.btnText))
-    expect(screen.getByText(modal.secondaryButton!.btnText))
+    expect(screen.getByText(get(modal, 'title', '')))
+    expect(screen.getByText(get(modal, 'description', '')))
+    expect(screen.getByText(get(modal, 'primaryButton.btnText', '')))
+    expect(screen.getByText(get(modal, 'secondaryButton.btnText', '')))
   })
 })

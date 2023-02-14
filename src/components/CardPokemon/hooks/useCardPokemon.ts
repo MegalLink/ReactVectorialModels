@@ -5,8 +5,10 @@ import { deletePokemon } from '../../../store/reducers/pokemon-reducer'
 import { useAppDispatch } from '../../../store/store-hook'
 
 export interface UseCardPokemon {
-  handleUpdate: (pokemonName: string) => void
-  handleDelete: () => void
+  actions: {
+    handleUpdate: (pokemonName: string) => void
+    handleDelete: () => void
+  }
 }
 
 export const useCardPokemon = (pokemon: GetPokemonResponse): UseCardPokemon => {
@@ -20,7 +22,9 @@ export const useCardPokemon = (pokemon: GetPokemonResponse): UseCardPokemon => {
   }
 
   return {
-    handleDelete,
-    handleUpdate,
+    actions: {
+      handleDelete,
+      handleUpdate,
+    },
   }
 }

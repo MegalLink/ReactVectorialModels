@@ -1,62 +1,17 @@
-import React, { useEffect } from 'react'
-import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
+import React from 'react'
+import { FormProvider } from 'react-hook-form'
 import { Box, Button } from '@mui/material'
-import SectionInformation from '../SectionFormInformation/SectionFormInformation'
+import { SectionInformation } from '../SectionFormInformation/SectionFormInformation'
 import { HeaderForm } from '../HeaderForm/HeaderForm'
-import { GetPokemonResponse } from '../../shared/interfaces/get-pokemon-response'
-import { defaultTo, isEmpty } from 'lodash'
-import { useParams } from 'react-router-dom'
-import { useAppSelector, useAppDispatch } from '../../store/store-hook'
-import { resetPokemonToEdit } from '../../store/reducers/pokemon-reducer'
-import SectionStats from '../SectionFormStats/SectionFormStats'
-import { getPokemonByName } from '../../store/reducers/pokemon-thunks'
+import { SectionStats } from '../SectionFormStats/SectionFormStats'
+import { usePokemonForm } from './hooks/usePokemonForm'
 
-const defaultPokemon: GetPokemonResponse = {
-  height: 0,
-  id: 0,
-  name: '',
-  weight: 0,
-  sprites: { other: { dream_world: { front_default: '' } } },
-  stats: [],
-  types: [],
-}
+export function PokemonForm() {
+  const {
+    methods,
+    actions: { onSubmit },
+  } = usePokemonForm()
 
-export default function PokemonForm() {
-  const { pokemonId } = useParams()
-  const { pokemonToEdit } = useAppSelector((store) => store.pokemon)
-  const dispatch = useAppDispatch()
-  const methods = useForm<GetPokemonResponse>({
-    mode: 'onSubmit',
-    reValidateMode: 'onBlur',
-    defaultValues: { ...defaultPokemon },
-  })
-
-  const onSubmit: SubmitHandler<GetPokemonResponse> = (data) => {
-    console.log('Do something', data)
-  }
-
-  useEffect(() => {
-    if (!isEmpty(pokemonId)) {
-      dispatch(getPokemonByName(defaultTo(pokemonId, '')))
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!isEmpty(pokemonToEdit)) {
-      methods.reset(pokemonToEdit)
-    }
-  }, [pokemonToEdit])
-
-  // on unmount
-  useEffect(
-    () => () => {
-      // Important reset form on unmount, and reset store values
-      console.log('unmount')
-      dispatch(resetPokemonToEdit())
-      methods.reset()
-    },
-    [],
-  )
   return (
     <div>
       <FormProvider {...methods}>

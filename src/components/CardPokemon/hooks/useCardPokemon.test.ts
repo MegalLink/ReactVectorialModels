@@ -48,7 +48,7 @@ describe('Test useCardPokemon hook', () => {
     const { result } = renderUseCardPokemon(pokemon)
 
     act(() => {
-      result.current.handleUpdate(pokemon.name)
+      result.current.actions.handleUpdate(pokemon.name)
     })
 
     expect(navigate).toHaveBeenCalledTimes(1)
@@ -60,7 +60,7 @@ describe('Test useCardPokemon hook', () => {
     const { result } = renderUseCardPokemon(pokemon)
 
     act(() => {
-      result.current.handleDelete()
+      result.current.actions.handleDelete()
     })
     expect(dispatch).toHaveBeenCalledTimes(1)
   })

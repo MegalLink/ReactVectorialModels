@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form'
 import Card from '@mui/material/Card'
 import { get, isEmpty } from 'lodash'
 
-export default function SectionInformation() {
+export function SectionInformation() {
   const {
     register,
     formState: { errors },

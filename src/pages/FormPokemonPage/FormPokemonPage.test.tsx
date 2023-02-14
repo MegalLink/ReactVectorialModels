@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import { FormPokemonPage } from './FormPokemonPage'
 
-jest.mock('../../components/PokemonForm/PokemonForm', () => () => {
-  return <div data-testid='pokemon-form' />
-})
+jest.mock('../../components/PokemonForm/PokemonForm', () => ({
+  PokemonForm: () => {
+    return <div data-testid='pokemon-form' />
+  },
+}))
 
 describe('Test FormPokemonPage component', () => {
   const renderComponent = () => {

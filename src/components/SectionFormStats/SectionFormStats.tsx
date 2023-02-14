@@ -9,7 +9,7 @@ const stats = [
   { value: 67, label: 'C' },
 ]
 
-export default function SectionStats() {
+export function SectionStats() {
   const { control } = useFormContext()
   return (
     <Card sx={{ p: '10px', mt: '10px' }}>

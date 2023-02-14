@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Button from '@mui/material/Button'
 import { useAppSelector } from '../../store/store-hook'
-import { isEmpty } from 'lodash'
+import { isEmpty, get } from 'lodash'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import { TransitionProps } from '@mui/material/transitions'
 import Slide from '@mui/material/Slide'
@@ -24,24 +24,24 @@ export function Modal() {
     <Dialog
       TransitionComponent={Transition}
       open={basicModal.isOpen}
-      onClose={basicModal.handleClose}
+      onClose={get(basicModal, 'handleClose')}
     >
-      {!isEmpty(basicModal.title) && <DialogTitle>{basicModal.title}</DialogTitle>}
+      {!isEmpty(basicModal.title) && <DialogTitle>{get(basicModal, 'title')}</DialogTitle>}
       <DialogContent>
         {!isEmpty(basicModal.description) && (
-          <DialogContentText>{basicModal.description}</DialogContentText>
+          <DialogContentText>{get(basicModal, 'description')}</DialogContentText>
         )}
       </DialogContent>
       <DialogActions>
         {!isEmpty(basicModal.primaryButton) && (
-          <Button onClick={basicModal.primaryButton!.handleClick}>
-            {basicModal.primaryButton?.btnText}
+          <Button onClick={get(basicModal, 'primaryButton.handleClick')}>
+            {get(basicModal, 'primaryButton.btnText')}
           </Button>
         )}
 
         {!isEmpty(basicModal.secondaryButton) && (
-          <Button onClick={basicModal.secondaryButton!.handleClick}>
-            {basicModal.secondaryButton?.btnText}
+          <Button onClick={get(basicModal, 'secondaryButton.handleClick')}>
+            {get(basicModal, 'secondaryButton.btnText')}
           </Button>
         )}
       </DialogActions>
