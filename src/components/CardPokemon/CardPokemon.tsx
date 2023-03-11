@@ -14,7 +14,7 @@ interface CardPokemonProps {
 }
 
 export function CardPokemon({ pokemon }: CardPokemonProps) {
-  const { handleDelete, handleUpdate } = useCardPokemon(pokemon)
+  const { actions } = useCardPokemon(pokemon)
 
   return (
     <Card>
@@ -36,10 +36,10 @@ export function CardPokemon({ pokemon }: CardPokemonProps) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size='small' onClick={() => handleUpdate(pokemon.name)}>
+        <Button size='small' onClick={() => actions.handleUpdate(pokemon.name)}>
           Modificar
         </Button>
-        <Button size='small' onClick={() => handleDelete()}>
+        <Button size='small' onClick={() => actions.handleDelete()}>
           Eliminar
         </Button>
       </CardActions>

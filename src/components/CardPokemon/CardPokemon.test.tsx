@@ -20,8 +20,10 @@ describe('Test CardPokemon component', () => {
 
   const mockUseCardPokemonHook = () => {
     const hookValues: CustomHook.UseCardPokemon = {
-      handleDelete: jest.fn(),
-      handleUpdate: jest.fn(),
+      actions: {
+        handleDelete: jest.fn(),
+        handleUpdate: jest.fn(),
+      },
     }
 
     jest.spyOn(CustomHook, 'useCardPokemon').mockReturnValue(hookValues)
@@ -40,22 +42,22 @@ describe('Test CardPokemon component', () => {
 
   describe('actions', () => {
     it('should call handleDelete function when "Eliminar" button is pressed', async () => {
-      const { handleDelete } = mockUseCardPokemonHook()
+      const { actions } = mockUseCardPokemonHook()
       renderComponent(pokemon)
 
       fireEvent.click(screen.getByText('Eliminar'))
       await waitFor(() => {
-        expect(handleDelete).toHaveBeenCalledTimes(1)
+        expect(actions.handleDelete).toHaveBeenCalledTimes(1)
       })
     })
 
     it('should call handleUpdate function when "Modificar" button is pressed', async () => {
-      const { handleUpdate } = mockUseCardPokemonHook()
+      const { actions } = mockUseCardPokemonHook()
       renderComponent(pokemon)
 
       fireEvent.click(screen.getByText('Modificar'))
       await waitFor(() => {
-        expect(handleUpdate).toHaveBeenCalledTimes(1)
+        expect(actions.handleUpdate).toHaveBeenCalledTimes(1)
       })
     })
   })
