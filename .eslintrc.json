@@ -22,7 +22,6 @@
     "spaced-comment": "error",
     "@typescript-eslint/no-empty-function": ["error", { "allow": ["arrowFunctions"] }],
     "@typescript-eslint/no-explicit-any": ["off"],
-    "quotes": ["error", "single"],
     "react/display-name": "off"
   },
   "settings": {
