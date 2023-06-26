@@ -1,18 +1,19 @@
 import React, { useState, FC } from 'react'
 import { Box } from '@mui/material'
 import { MuiFileInput } from 'mui-file-input'
-import { DocumentDataType } from '../../shared/enums/document-data-type'
+import { FieldDataType, FieldNameEnum } from '../../shared/enums/document-data-type'
 import { getLabelFromFile } from '../../shared/constants/document-data-type-get'
 import { get } from 'lodash'
+import { useFormContext } from 'react-hook-form'
 
 interface FileInputProps {
-  // onSendData: (data: string) => void;
-  dataType: DocumentDataType
+  fieldName: FieldNameEnum
+  dataType: FieldDataType
 }
 
-export const FileInput: FC<FileInputProps> = ({ dataType }) => {
+export const FileInput: FC<FileInputProps> = ({ dataType, fieldName }) => {
   const [file, setFile] = useState<File | null>(null)
-  const [content, setContent] = useState('')
+  const { setValue } = useFormContext()
 
   const handleChange = (file: File | null) => {
     console.log('File', file)
@@ -20,20 +21,14 @@ export const FileInput: FC<FileInputProps> = ({ dataType }) => {
     reader.onloadend = () => {
       const content: string = get(reader, 'result', '') as string
       console.log('reader', content)
-      setContent(content)
+      setValue(fieldName, content)
     }
 
     setFile(file)
     if (file !== null) {
       reader.readAsText(file)
-    } else {
-      setContent('')
     }
   }
-
-  React.useEffect(() => {
-    console.log('content', content)
-  }, [content])
 
   return (
     <Box>

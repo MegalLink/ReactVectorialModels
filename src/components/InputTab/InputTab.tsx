@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container } from '@mui/material'
-import { DocumentDataType } from '../../shared/enums/document-data-type'
+import { FieldDataType, FieldNameEnum } from '../../shared/enums/document-data-type'
 import { InputContainer } from '../InputContainer/InputContainer'
 
 export const InputTab = () => {
@@ -9,10 +9,6 @@ export const InputTab = () => {
   /*  const setDataFromChild = (data) => {
     setData(data);
   };*/
-
-  React.useEffect(() => {
-    console.log('data on parent', filesData)
-  }, [filesData])
 
   return (
     <Container
@@ -26,7 +22,7 @@ export const InputTab = () => {
         gap: 5,
       }}
     >
-      <InputContainer dataType={DocumentDataType.DOCUMENT} />
+      <InputContainer dataType={FieldDataType.DOCUMENTS} fieldName={FieldNameEnum.DOCUMENTS} />
     </Container>
   )
 }

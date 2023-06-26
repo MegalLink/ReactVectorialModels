@@ -3,7 +3,9 @@ import Box from '@mui/material/Box'
 import Tabs from '@mui/material/Tabs'
 import { Tab } from '@mui/material'
 import { InputTab } from '../InputTab/InputTab'
-import { useAppSelector } from '../../store/store-hook'
+import { useAppDispatch, useAppSelector } from '../../store/store-hook'
+import { setTab } from '../../store/reducers/vectorial-data-reducer'
+import { TabEnum } from '../../shared/enums/tab'
 interface TabPanelProps {
   children?: React.ReactNode
   index: number
@@ -33,33 +35,30 @@ function selectTab(index: number) {
 }
 
 export function HorizontalTabs() {
-  const {tab} = useAppSelector((store)=>store.vectorialData)
-
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue)
-  }
+  const { tab } = useAppSelector((store) => store.vectorialData)
 
   return (
     <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', height: 300 }}>
       <Tabs
         centered
         orientation='horizontal'
-        value={value}
-        onChange={handleChange}
+        value={tab}
         aria-label='Horizontal tabs'
         sx={{ borderRight: 1, borderColor: 'divider' }}
         variant='fullWidth'
       >
-        <Tab label='Input' {...selectTab(0)} />
-        <Tab label='Config' {...selectTab(1)} />
-        <Tab label='Output' {...selectTab(1)} />
+        <Tab label='Input' {...selectTab(TabEnum.INPUT)} />
+        <Tab label='Config' {...selectTab(TabEnum.CONFIG)} />
+        <Tab label='Output' {...selectTab(TabEnum.OUTPUT)} />
       </Tabs>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={tab} index={TabEnum.INPUT}>
         <InputTab />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={tab} index={TabEnum.CONFIG}>
         <h1>Soy el h2</h1>
+      </TabPanel>
+      <TabPanel value={tab} index={TabEnum.OUTPUT}>
+        <h1>Soy el h3</h1>
       </TabPanel>
     </Box>
   )

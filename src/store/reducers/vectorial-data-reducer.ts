@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TabEnum } from '../../shared/enums/tab'
 
-interface InputData {
+export interface InputData {
   documents: string[][]
   query: string[]
-  stopWords: string[]
+  stopWords?: string[]
+  vocabulary?: string[]
 }
 
 interface OutputData {
@@ -22,7 +23,6 @@ export const initialState: VectorialDataAppState = {
   inputData: {
     documents: [],
     query: [],
-    stopWords: [],
   },
   validateInputData:false,
   tab:TabEnum.INPUT,

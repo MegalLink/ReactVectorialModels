@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import { TextField } from '@mui/material'
-import { DocumentDataType } from '../../shared/enums/document-data-type'
+import { FieldDataType, FieldNameEnum } from '../../shared/enums/document-data-type'
 import { getSampleData, getTitle } from '../../shared/constants/document-data-type-get'
+import { useFormContext } from 'react-hook-form'
 
 interface TextFieldInputProps {
-  // onSendData: (data: string) => void;
-  dataType: DocumentDataType
+  fieldName: FieldNameEnum
+  dataType: FieldDataType
 }
-export const TextFieldInput:React.FC<TextFieldInputProps> = ({dataType}) => {
-  const [value,setValue]=useState('')
-  
+export const TextFieldInput: React.FC<TextFieldInputProps> = ({ dataType, fieldName }) => {
+  const { register } = useFormContext()
+
   return (
     <TextField
       id='outlined-textarea'
@@ -17,10 +18,7 @@ export const TextFieldInput:React.FC<TextFieldInputProps> = ({dataType}) => {
       placeholder={getSampleData(dataType)}
       sx={{ minWidth: 450 }}
       multiline={false}
-      value={value}
-      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
-      }}
+      {...register(fieldName)}
     />
   )
 }

@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import { FileInput } from '../FileInput/FileInput'
-import { DocumentDataType } from '../../shared/enums/document-data-type'
+import { FieldDataType, FieldNameEnum } from '../../shared/enums/document-data-type'
 import { Paper, Stack, Typography } from '@mui/material'
 import { CustomSwitch } from '../CustomSwitch/CustomSwitch'
 import { TextFieldInput } from '../TextFieldInput/TextFieldInput'
 import { getTitle } from '../../shared/constants/document-data-type-get'
 
 interface InputContainerProps {
-  dataType: DocumentDataType
+  dataType: FieldDataType
+  fieldName: FieldNameEnum
 }
 
-export const InputContainer: React.FC<InputContainerProps> = ({ dataType }) => {
+export const InputContainer: React.FC<InputContainerProps> = ({ dataType, fieldName }) => {
   const [isFromFile, setIsFromFile] = useState(false)
   const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsFromFile(event.target.checked)
@@ -24,7 +25,11 @@ export const InputContainer: React.FC<InputContainerProps> = ({ dataType }) => {
         </Typography>
         <CustomSwitch checked={isFromFile} onChange={handleSwitch} />
       </Stack>
-      {isFromFile ? <FileInput dataType={dataType} /> : <TextFieldInput dataType={dataType}/>}
+      {isFromFile ? (
+        <FileInput dataType={dataType} fieldName={fieldName} />
+      ) : (
+        <TextFieldInput dataType={dataType} fieldName={fieldName} />
+      )}
     </Paper>
   )
 }
