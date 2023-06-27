@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { TabEnum } from '../../shared/enums/tab'
 import { PreparedVectorialData } from '../../shared/utils/transformations'
 
@@ -8,17 +8,17 @@ interface OutputData {
 
 interface VectorialDataAppState {
   inputData: PreparedVectorialData
-  tab:TabEnum,
+  tab: TabEnum
   outputData: OutputData
 }
 
 export const initialState: VectorialDataAppState = {
   inputData: {
-    vocabulary:[],
+    vocabulary: [],
     queryWeight: [],
-    documentsWeigth:[],
+    documentsWeigth: [],
   },
-  tab:TabEnum.INPUT,
+  tab: TabEnum.INPUT,
   outputData: {
     modelResult: [],
   },
@@ -34,8 +34,11 @@ const vectorialData = createSlice({
     setTab(state, action) {
       state.tab = action.payload
     },
+    setOutputData(state, action) {
+      state.outputData = action.payload
+    },
   },
 })
 
-export const { setInputData,setTab } = vectorialData.actions
+export const { setInputData, setTab, setOutputData } = vectorialData.actions
 export default vectorialData.reducer

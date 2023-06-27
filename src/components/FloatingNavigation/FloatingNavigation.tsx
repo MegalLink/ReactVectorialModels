@@ -4,15 +4,17 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useAppDispatch, useAppSelector } from '../../store/store-hook'
 import { TabEnum } from '../../shared/enums/tab'
-import { setInputData, setTab } from '../../store/reducers/vectorial-data-reducer'
+import { setInputData, setOutputData, setTab } from '../../store/reducers/vectorial-data-reducer'
 import { useFormContext } from 'react-hook-form'
 import { isEmpty } from 'lodash'
 import SnackbarUtil from '../../shared/utils/snack-bar'
 import {
   prepareDocumentsFromString,
   prepareStringToArray,
+  selectMethod,
   vectorialModelPrepare,
 } from '../../shared/utils/transformations'
+import { VectorialMethodEnum } from '../../shared/enums/vectorial-methods'
 export const FloatingNavigation = () => {
   const { tab } = useAppSelector((store) => store.vectorialData)
   const dispatch = useAppDispatch()
@@ -44,15 +46,14 @@ export const FloatingNavigation = () => {
             values.wordSeparator,
           )
 
-          console.log('prparedDocuments', documents)
           const query = prepareStringToArray(values.query, values.wordSeparator)
-          console.log('prepare query', query)
           const stopWords = prepareStringToArray(values.stopWords, values.wordSeparator)
           console.log('preparedStopWords', stopWords)
           // TODO SEND VOCABULARY
           const data = vectorialModelPrepare(documents, query, stopWords)
-          console.log('vectorialModelPrepare', data)
+          const vectorialMethod: VectorialMethodEnum = values.vectorialMethod
           dispatch(setInputData(data))
+          dispatch(setOutputData(selectMethod(data, vectorialMethod)))
           dispatch(setTab(TabEnum.OUTPUT))
         }
         break
