@@ -3,9 +3,10 @@ import Box from '@mui/material/Box'
 import Tabs from '@mui/material/Tabs'
 import { Tab } from '@mui/material'
 import { InputTab } from '../InputTab/InputTab'
-import { useAppDispatch, useAppSelector } from '../../store/store-hook'
-import { setTab } from '../../store/reducers/vectorial-data-reducer'
+import { useAppSelector } from '../../store/store-hook'
 import { TabEnum } from '../../shared/enums/tab'
+import { ConfigTab } from '../ConfigTab/ConfigTab'
+import { OutputTab } from '../OutputTab/OutputTab'
 interface TabPanelProps {
   children?: React.ReactNode
   index: number
@@ -55,10 +56,10 @@ export function HorizontalTabs() {
         <InputTab />
       </TabPanel>
       <TabPanel value={tab} index={TabEnum.CONFIG}>
-        <h1>Soy el h2</h1>
+        <ConfigTab />
       </TabPanel>
       <TabPanel value={tab} index={TabEnum.OUTPUT}>
-        <h1>Soy el h3</h1>
+        <OutputTab />
       </TabPanel>
     </Box>
   )
