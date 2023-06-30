@@ -1,4 +1,5 @@
 import {
+  Box,
   Container,
   FormControl,
   InputLabel,
@@ -42,7 +43,7 @@ export const ConfigTab = () => {
         {!isEmpty(values.stopWords) && <Typography>Stop Words: {values.stopWords}</Typography>}
       </Paper>
 
-      <Paper
+      <Container
         sx={{
           minWidth: 450,
           padding: 2,
@@ -50,6 +51,7 @@ export const ConfigTab = () => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
+          border: 'none',
           gap: 5,
         }}
       >
@@ -82,7 +84,7 @@ export const ConfigTab = () => {
             )}
           />
         </FormControl>
-      </Paper>
+      </Container>
     </Container>
   )
 }

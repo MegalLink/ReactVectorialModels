@@ -1,19 +1,23 @@
 import React from 'react'
 import { Container, Paper, Typography } from '@mui/material'
-import { useFormContext } from 'react-hook-form'
 import { useAppSelector } from '../../store/store-hook'
 import { CustomTable } from '../Table/Table'
 
 export const OutputTab = () => {
   const { inputData, outputData } = useAppSelector((store) => store.vectorialData)
-  const { getValues } = useFormContext()
-  const values = getValues()
+  const vocabulary = inputData.vocabulary
+  console.log('vocabulario', vocabulary)
+
+  const weigthMatrix: number[][] = outputData.weightMatrix
+  const weightMatrixHeader: string[] = ['#Documento', ...vocabulary]
+  const modelResult: number[] = outputData.result
+  const modelResultHeader: string[] = ['#Documento', 'Similitud']
 
   return (
     <Container
       maxWidth='sm'
       sx={{
-        paddingTop: 10,
+        paddingTop: 2,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -25,7 +29,8 @@ export const OutputTab = () => {
         <Typography variant='h6' component='div'>
           Output
         </Typography>
-        <CustomTable />
+        <CustomTable header={weightMatrixHeader} title='Tabla de pesos' data={weigthMatrix} />
+        <CustomTable header={modelResultHeader} title='Tabla de resultados' data={modelResult} />
       </Paper>
     </Container>
   )

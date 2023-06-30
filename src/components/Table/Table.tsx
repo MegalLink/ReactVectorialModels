@@ -6,48 +6,67 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { Key } from '@mui/icons-material'
+import { isEmpty, isUndefined } from 'lodash'
+import { Box, CircularProgress, Container, Typography } from '@mui/material'
 
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
-  return { name, calories, fat, carbs, protein }
+interface CustomTableProps {
+  header: string[]
+  data: number[] | number[][]
+  title: string
 }
 
-const header = ['#Doc', 'D1', 'D2', 'D3', 'D4']
+export const CustomTable: React.FC<CustomTableProps> = ({ header, title, data }) => {
+  if (isUndefined(data) || isUndefined(data[0])) {
+    console.log('header inside', header)
+    console.log('rows', data)
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
+  console.log('header outside', header)
+  console.log('rows outside', data)
 
-const rows = [
-  [1, 2, 3, 4],
-  [1, 2, 3, 4],
-  [4, 5, 6, 7],
-  [1, 2, 3, 4],
-]
-
-export const CustomTable = () => {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-        <TableHead>
-          <TableRow>
-            {header.map((item, index) => (
-              <TableCell key={index}>{item}</TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component='th' scope='row'>
-                {index}
-              </TableCell>
-
-              {row.map((value, idex) => (
-                <TableCell key={index} align='right'>
-                  {value}
-                </TableCell>
+    <Container
+      sx={{
+        minWidth: 450,
+        padding: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 5,
+      }}
+    >
+      <Typography variant='h6'>{title} </Typography>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+          <TableHead>
+            <TableRow>
+              {header.map((item, index) => (
+                <TableCell key={index}>{item}</TableCell>
               ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {Array.isArray(data) &&
+              data.map((value, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index}</TableCell>
+                  {Array.isArray(value) ? (
+                    value.map((internalValue, idx) => (
+                      <TableCell key={idx}>{internalValue}</TableCell>
+                    ))
+                  ) : (
+                    <TableCell>{value}</TableCell>
+                  )}
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   )
 }

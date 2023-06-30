@@ -32,38 +32,38 @@ export function vectorialModelPrepare(
   docs: string[][],
   query: string[],
   stopWords: string[] = [],
+  vocabulary:string[] = [],
 ): PreparedVectorialData {
-  console.log('For query:', query)
-  console.log('Stop words', stopWords)
+  // Filtramos los documentos eliminando las stop words
   const filteredDocuments = docs.map((document) => {
     return document.filter((word) => {
       return !stopWords.includes(word.toLowerCase().trim())
     })
   })
 
-  console.log('documents', filteredDocuments)
 
-  const wordsMap = new Map<string, number>()
-  const n = filteredDocuments.length
-  for (let i = 0; i < n; i++) {
-    const m = filteredDocuments[i].length
-    for (let j = 0; j < m; j++) {
-      if (!wordsMap.has(filteredDocuments[i][j])) {
-        wordsMap.set(filteredDocuments[i][j], 0)
+  let keys:string[]=vocabulary
+  if(keys.length===0){
+    const wordsMap = new Map<string, number>()
+    const n = filteredDocuments.length
+    for (let i = 0; i < n; i++) {
+      const m = filteredDocuments[i].length
+      for (let j = 0; j < m; j++) {
+        if (!wordsMap.has(filteredDocuments[i][j])) {
+          wordsMap.set(filteredDocuments[i][j], 0)
+        }
+        wordsMap.set(filteredDocuments[i][j], wordsMap.get(filteredDocuments[i][j])! + 1)
       }
-      wordsMap.set(filteredDocuments[i][j], wordsMap.get(filteredDocuments[i][j])! + 1)
     }
+    keys = Array.from(wordsMap.keys())
   }
 
-  const keys = Array.from(wordsMap.keys())
-  console.log('Keys', keys)
-
   const documentsToWeigth = filteredDocuments.map((row) => {
-    return toWeightConverter(row, wordsMap)
+    return toWeightConverter(row, keys)
   })
   console.log('documents with weight', documentsToWeigth)
 
-  const queryToWeigth = toWeightConverter(query, wordsMap)
+  const queryToWeigth = toWeightConverter(query, keys)
 
   return { vocabulary: keys, queryWeight: queryToWeigth, documentsWeigth: documentsToWeigth }
 }
@@ -75,8 +75,7 @@ export function prepareStringToArray(input: string | undefined, separator: strin
   return input!.split(separator).map((word) => word.toLowerCase().trim())
 }
 
-function toWeightConverter(input: string[], wordsMap: Map<string, number>): number[] {
-  const keys = Array.from(wordsMap.keys())
+function toWeightConverter(input: string[], keys:string[]): number[] {
   const documentWeight: number[] = keys.map((key) =>
     input.reduce((count, value) => (value === key ? count + 1 : count), 0),
   )
@@ -96,11 +95,12 @@ export function similitud1(queryWeight: number[], documentsWeigth: number[][]): 
     let total = 0
     for (let j = 0; j < queryWeight.length; j++) {
       total += queryWeight[j] * onesDocumentWeight[i][j]
-      result.push(total)
+   
     }
-
+    result.push(total)
     console.log('document:', i, 'similitud:', total)
   }
+  console.log("result similitud1",result)
 
   return { weightMatrix: onesDocumentWeight, result: result, time: 0 }
 }

@@ -9,6 +9,7 @@ import { useFormContext } from 'react-hook-form'
 import { isEmpty } from 'lodash'
 import SnackbarUtil from '../../shared/utils/snack-bar'
 import {
+  MethodResults,
   prepareDocumentsFromString,
   prepareStringToArray,
   selectMethod,
@@ -18,7 +19,7 @@ import { VectorialMethodEnum } from '../../shared/enums/vectorial-methods'
 export const FloatingNavigation = () => {
   const { tab } = useAppSelector((store) => store.vectorialData)
   const dispatch = useAppDispatch()
-  const { handleSubmit, getValues } = useFormContext()
+  const { getValues } = useFormContext()
 
   const handleNextNavigation = () => {
     const values = getValues()
@@ -38,7 +39,6 @@ export const FloatingNavigation = () => {
         SnackbarUtil.error('Hay campos incompletos')
         break
       case TabEnum.CONFIG:
-        // TODO REFACTOR THIS SHOULD NOT VALIDATE
         if (!isEmpty(values.documents)) {
           const documents = prepareDocumentsFromString(
             values.documents,
@@ -48,12 +48,12 @@ export const FloatingNavigation = () => {
 
           const query = prepareStringToArray(values.query, values.wordSeparator)
           const stopWords = prepareStringToArray(values.stopWords, values.wordSeparator)
-          console.log('preparedStopWords', stopWords)
-          // TODO SEND VOCABULARY
-          const data = vectorialModelPrepare(documents, query, stopWords)
+          const vocabulary = prepareStringToArray(values.vocabulary, values.wordSeparator)
+          const data = vectorialModelPrepare(documents, query, stopWords, vocabulary)
           const vectorialMethod: VectorialMethodEnum = values.vectorialMethod
           dispatch(setInputData(data))
-          dispatch(setOutputData(selectMethod(data, vectorialMethod)))
+          const outputData: MethodResults = selectMethod(data, vectorialMethod)
+          dispatch(setOutputData(outputData))
           dispatch(setTab(TabEnum.OUTPUT))
         }
         break

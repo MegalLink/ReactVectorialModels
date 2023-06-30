@@ -1,15 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { TabEnum } from '../../shared/enums/tab'
-import { PreparedVectorialData } from '../../shared/utils/transformations'
-
-interface OutputData {
-  modelResult: number[]
-}
+import { MethodResults, PreparedVectorialData } from '../../shared/utils/transformations'
 
 interface VectorialDataAppState {
   inputData: PreparedVectorialData
   tab: TabEnum
-  outputData: OutputData
+  outputData: MethodResults
 }
 
 export const initialState: VectorialDataAppState = {
@@ -20,7 +16,9 @@ export const initialState: VectorialDataAppState = {
   },
   tab: TabEnum.INPUT,
   outputData: {
-    modelResult: [],
+    weightMatrix: [],
+    result:[],
+    time: 0,
   },
 }
 
