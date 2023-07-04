@@ -32,7 +32,7 @@ export function vectorialModelPrepare(
   docs: string[][],
   query: string[],
   stopWords: string[] = [],
-  vocabulary:string[] = [],
+  vocabulary: string[] = [],
 ): PreparedVectorialData {
   // Filtramos los documentos eliminando las stop words
   const filteredDocuments = docs.map((document) => {
@@ -41,9 +41,9 @@ export function vectorialModelPrepare(
     })
   })
 
- // Si el vocabulario no esta vacio calculamos un vocabulario a partir de los documentos
-  let keys:string[]=vocabulary
-  if(keys.length===0){
+  // Si el vocabulario no esta vacio calculamos un vocabulario a partir de los documentos
+  let keys: string[] = vocabulary
+  if (keys.length === 0) {
     const wordsMap = new Map<string, number>()
     const n = filteredDocuments.length
     for (let i = 0; i < n; i++) {
@@ -75,7 +75,7 @@ export function prepareStringToArray(input: string | undefined, separator: strin
   return input!.split(separator).map((word) => word.toLowerCase().trim())
 }
 
-function toWeightConverter(input: string[], keys:string[]): number[] {
+function toWeightConverter(input: string[], keys: string[]): number[] {
   const documentWeight: number[] = keys.map((key) =>
     input.reduce((count, value) => (value === key ? count + 1 : count), 0),
   )
@@ -95,12 +95,11 @@ export function similitud1(queryWeight: number[], documentsWeigth: number[][]): 
     let total = 0
     for (let j = 0; j < queryWeight.length; j++) {
       total += queryWeight[j] * onesDocumentWeight[i][j]
-   
     }
     result.push(total)
     console.log('document:', i, 'similitud:', total)
   }
-  console.log("result similitud1",result)
+  console.log('result similitud1', result)
 
   return { weightMatrix: onesDocumentWeight, result: result, time: 0 }
 }
@@ -139,8 +138,11 @@ export function similitud3(queryWeight: number[], documentsWeigth: number[][]): 
   const result = []
   for (let i = 0; i < onesDocumentWeight.length; i++) {
     let qdi = 0
-    for (let j = 0; j < onesDocumentWeight.length; j++) {
+    for (let j = 0; j < queryWeight.length; j++) {
+      console.log('weight j', queryWeight[i])
+      console.log('ones document weight', onesDocumentWeight[i][j])
       qdi += queryWeight[j] * onesDocumentWeight[i][j]
+      console.log('QDI', qdi)
     }
     const mdi = getModuleOfVector(onesDocumentWeight[i])
     const total = qdi / (mdi * mq)
@@ -241,14 +243,11 @@ export function similitud5(
   console.log('document', documentsWeigth)
   const numberOfDocuments = documentsWeigth.length
   const ni: number[] = calculateNi(documentsWeigth)
-  console.log("ni",ni)
+  console.log('ni', ni)
   const ciInitial: number[] = ni.map((n) => Math.log10((numberOfDocuments - n) / n))
   const ciSimInitial = documentsWeigth.map((document) => {
-    return document.reduce(
-      (sum, docItem, j) => sum + queryWeight[j] * ciInitial[j] * docItem,
-      0
-    );
-  });
+    return document.reduce((sum, docItem, j) => sum + queryWeight[j] * ciInitial[j] * docItem, 0)
+  })
   console.log('ciInitial', ciInitial)
   console.log('simInitial', ciSimInitial)
 
@@ -263,25 +262,25 @@ export function similitud5(
   const ci: number[] = []
 
   for (let i = 0; i < queryWeight.length; i++) {
-    console.log("i",i)
+    console.log('i', i)
     const a = ri[i] + 0.5
     const b = numberRelevantDocuments - ri[i] + 0.5
     const c = ni[i] - ri[i] + 0.5
     const d = numberOfDocuments - numberRelevantDocuments - ni[i] + ri[i] + 0.5
 
-    const divideOp = (a / b) / (c / d)
-    console.log("DivideOP",divideOp)
+    const divideOp = a / b / (c / d)
+    console.log('DivideOP', divideOp)
     const result = Math.log10(divideOp)
-    console.log("result mat op",result)
-    if(isNaN(result)){
+    console.log('result mat op', result)
+    if (isNaN(result)) {
       ci.push(0)
-      break;
+      break
     }
     ci.push(result)
   }
 
   console.log('ci final', ci)
-  const ciSimFinal: number[] = transformToOnesMatrix(documentsWeigth).map((document) => {
+  const ciSimFinal: number[] = documentsWeigth.map((document) => {
     return document.reduce((sum, docItem, j) => sum + queryWeight[j] * docItem * Number(ci[j]), 0)
   })
 
@@ -294,30 +293,28 @@ export function selectMethod(
   input: PreparedVectorialData,
   method: VectorialMethodEnum,
 ): MethodResults {
-  const startTime= (new Date()).getTime()
-  let result:MethodResults = { weightMatrix: [],
-    result: [],
-    time: 0}
+  const startTime = new Date().getTime()
+  let result: MethodResults = { weightMatrix: [], result: [], time: 0 }
 
   switch (method) {
     case VectorialMethodEnum.BASIC:
-      result= similitud1(input.queryWeight, input.documentsWeigth)
-      break;
+      result = similitud1(input.queryWeight, input.documentsWeigth)
+      break
     case VectorialMethodEnum.WORD_DOCUMENT_LENGTH:
-      result= similitud2(input.queryWeight, input.documentsWeigth)
-      break;
+      result = similitud2(input.queryWeight, input.documentsWeigth)
+      break
     case VectorialMethodEnum.NORMALIZATION:
-      result= similitud3(input.queryWeight, input.documentsWeigth)
-      break;
+      result = similitud3(input.queryWeight, input.documentsWeigth)
+      break
     case VectorialMethodEnum.TF_IDF:
-      result= similitud4(input.queryWeight, input.documentsWeigth)
-      break;
+      result = similitud4(input.queryWeight, input.documentsWeigth)
+      break
     case VectorialMethodEnum.PROBABILISTIC:
       // TODO SEND NUMBER R FROM INPUT
-      result=  similitud5(input.queryWeight, input.documentsWeigth, 3)
-      break;
+      result = similitud5(input.queryWeight, input.documentsWeigth, 3)
+      break
   }
-  const endTime= (new Date()).getTime()-startTime
+  const endTime = new Date().getTime() - startTime
 
-  return {...result,time:endTime};
+  return { ...result, time: endTime }
 }

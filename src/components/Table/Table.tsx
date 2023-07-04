@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { isEmpty, isUndefined } from 'lodash'
+import { isUndefined } from 'lodash'
 import { Box, CircularProgress, Container, Typography } from '@mui/material'
 
 interface CustomTableProps {

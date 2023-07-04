@@ -12,6 +12,8 @@ export const OutputTab = () => {
   const weightMatrixHeader: string[] = ['#Documento', ...vocabulary]
   const modelResult: number[] = outputData.result
   const modelResultHeader: string[] = ['#Documento', 'Similitud']
+  const queryHeader: string[] = ['index', ...vocabulary]
+  const querySolved: any[][] = [[...inputData.queryWeight]]
 
   return (
     <Container
@@ -34,6 +36,7 @@ export const OutputTab = () => {
             color='primary'
           />
         </Typography>
+        <CustomTable header={queryHeader} title='Query' data={querySolved} />
         <CustomTable header={weightMatrixHeader} title='Tabla de pesos' data={weigthMatrix} />
         <CustomTable header={modelResultHeader} title='Tabla de resultados' data={modelResult} />
       </Paper>
