@@ -19,6 +19,7 @@ export interface FormValues {
 
 export default function App() {
   const methods = useForm<FormValues>({
+    mode: 'onSubmit',
     defaultValues: {
       documents: '',
       query: '',

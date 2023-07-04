@@ -20,7 +20,7 @@ export const getTitle = (dataType: FieldDataType): string => {
     case FieldDataType.DOCUMENTS:
       return 'COLECCION DE DOCUMENTOS'
     case FieldDataType.QUERY:
-      return 'QUERY'
+      return 'CONSULTA'
     case FieldDataType.VOCABULARY:
       return 'VOCABULARIO'
     case FieldDataType.STOP_WORDS:

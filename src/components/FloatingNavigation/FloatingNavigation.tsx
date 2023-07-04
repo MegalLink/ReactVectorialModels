@@ -19,24 +19,23 @@ import { VectorialMethodEnum } from '../../shared/enums/vectorial-methods'
 export const FloatingNavigation = () => {
   const { tab } = useAppSelector((store) => store.vectorialData)
   const dispatch = useAppDispatch()
-  const { getValues } = useFormContext()
+  const { getValues, handleSubmit } = useFormContext()
 
   const handleNextNavigation = () => {
     const values = getValues()
 
     switch (tab) {
       case TabEnum.INPUT:
-        console.log('values', values)
-        if (
-          !isEmpty(values.documents) &&
-          !isEmpty(values.query) &&
-          !isEmpty(values.documentsSeparator) &&
-          !isEmpty(values.wordSeparator)
-        ) {
-          dispatch(setTab(TabEnum.CONFIG))
-          break
-        }
-        SnackbarUtil.error('Hay campos incompletos')
+        handleSubmit(
+          () => {
+            // on valid submit
+            dispatch(setTab(TabEnum.CONFIG))
+          },
+          () => {
+            // on invalid submit
+            SnackbarUtil.error('Hay campos con errores o incompletos')
+          },
+        )()
         break
       case TabEnum.CONFIG:
         if (!isEmpty(values.documents)) {

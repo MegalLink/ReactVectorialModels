@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Paper, Typography } from '@mui/material'
+import { Chip, Container, Paper, Typography } from '@mui/material'
 import { useAppSelector } from '../../store/store-hook'
 import { CustomTable } from '../Table/Table'
 
@@ -27,7 +27,12 @@ export const OutputTab = () => {
     >
       <Paper sx={{ minWidth: 450, padding: 2 }}>
         <Typography variant='h6' component='div'>
-          Output
+          Resultados{' '}
+          <Chip
+            sx={{ marginLeft: '5%' }}
+            label={`Tempo en ms ${outputData.time}`}
+            color='primary'
+          />
         </Typography>
         <CustomTable header={weightMatrixHeader} title='Tabla de pesos' data={weigthMatrix} />
         <CustomTable header={modelResultHeader} title='Tabla de resultados' data={modelResult} />

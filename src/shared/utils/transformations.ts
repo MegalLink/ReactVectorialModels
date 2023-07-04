@@ -41,7 +41,7 @@ export function vectorialModelPrepare(
     })
   })
 
-
+ // Si el vocabulario no esta vacio calculamos un vocabulario a partir de los documentos
   let keys:string[]=vocabulary
   if(keys.length===0){
     const wordsMap = new Map<string, number>()
@@ -241,14 +241,18 @@ export function similitud5(
   console.log('document', documentsWeigth)
   const numberOfDocuments = documentsWeigth.length
   const ni: number[] = calculateNi(documentsWeigth)
+  console.log("ni",ni)
   const ciInitial: number[] = ni.map((n) => Math.log10((numberOfDocuments - n) / n))
-  const ciSimInitial: number[] = documentsWeigth.map((document) => {
-    return document.reduce((sum, docItem, j) => sum + queryWeight[j] * ciInitial[j] * docItem, 0)
-  })
+  const ciSimInitial = documentsWeigth.map((document) => {
+    return document.reduce(
+      (sum, docItem, j) => sum + queryWeight[j] * ciInitial[j] * docItem,
+      0
+    );
+  });
   console.log('ciInitial', ciInitial)
   console.log('simInitial', ciSimInitial)
 
-  // Extract the indices of the R largest numbers
+  // Extract the indices of the R largest numbers but consider recalculate r if the are less result for sim initial if is small than R the rows diferent from 0
   const indexRelevantDocuments: number[] = biggestNumbersOfArrayIndex(ciSimInitial, r)
 
   console.log('index relevant documents', indexRelevantDocuments)
@@ -259,14 +263,20 @@ export function similitud5(
   const ci: number[] = []
 
   for (let i = 0; i < queryWeight.length; i++) {
+    console.log("i",i)
     const a = ri[i] + 0.5
     const b = numberRelevantDocuments - ri[i] + 0.5
     const c = ni[i] - ri[i] + 0.5
     const d = numberOfDocuments - numberRelevantDocuments - ni[i] + ri[i] + 0.5
 
-    const divideOp = a / b / (c / d)
+    const divideOp = (a / b) / (c / d)
+    console.log("DivideOP",divideOp)
     const result = Math.log10(divideOp)
-
+    console.log("result mat op",result)
+    if(isNaN(result)){
+      ci.push(0)
+      break;
+    }
     ci.push(result)
   }
 
@@ -284,17 +294,30 @@ export function selectMethod(
   input: PreparedVectorialData,
   method: VectorialMethodEnum,
 ): MethodResults {
+  const startTime= (new Date()).getTime()
+  let result:MethodResults = { weightMatrix: [],
+    result: [],
+    time: 0}
+
   switch (method) {
     case VectorialMethodEnum.BASIC:
-      return similitud1(input.queryWeight, input.documentsWeigth)
+      result= similitud1(input.queryWeight, input.documentsWeigth)
+      break;
     case VectorialMethodEnum.WORD_DOCUMENT_LENGTH:
-      return similitud2(input.queryWeight, input.documentsWeigth)
+      result= similitud2(input.queryWeight, input.documentsWeigth)
+      break;
     case VectorialMethodEnum.NORMALIZATION:
-      return similitud3(input.queryWeight, input.documentsWeigth)
+      result= similitud3(input.queryWeight, input.documentsWeigth)
+      break;
     case VectorialMethodEnum.TF_IDF:
-      return similitud4(input.queryWeight, input.documentsWeigth)
+      result= similitud4(input.queryWeight, input.documentsWeigth)
+      break;
     case VectorialMethodEnum.PROBABILISTIC:
       // TODO SEND NUMBER R FROM INPUT
-      return similitud5(input.queryWeight, input.documentsWeigth, 3)
+      result=  similitud5(input.queryWeight, input.documentsWeigth, 3)
+      break;
   }
+  const endTime= (new Date()).getTime()-startTime
+
+  return {...result,time:endTime};
 }

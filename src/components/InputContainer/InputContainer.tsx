@@ -5,13 +5,15 @@ import { Paper, Stack, Typography } from '@mui/material'
 import { CustomSwitch } from '../CustomSwitch/CustomSwitch'
 import { TextFieldInput } from '../TextFieldInput/TextFieldInput'
 import { getTitle } from '../../shared/constants/document-data-type-get'
+import { RegisterOptions } from 'react-hook-form'
 
 interface InputContainerProps {
   dataType: FieldDataType
   fieldName: FieldNameEnum
+  options?: RegisterOptions
 }
 
-export const InputContainer: React.FC<InputContainerProps> = ({ dataType, fieldName }) => {
+export const InputContainer: React.FC<InputContainerProps> = ({ dataType, fieldName, options }) => {
   const [isFromFile, setIsFromFile] = useState(false)
   const handleSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsFromFile(event.target.checked)
@@ -28,7 +30,7 @@ export const InputContainer: React.FC<InputContainerProps> = ({ dataType, fieldN
       {isFromFile ? (
         <FileInput dataType={dataType} fieldName={fieldName} />
       ) : (
-        <TextFieldInput dataType={dataType} fieldName={fieldName} />
+        <TextFieldInput dataType={dataType} fieldName={fieldName} options={options} />
       )}
     </Paper>
   )
