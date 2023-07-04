@@ -79,7 +79,9 @@ export const ConfigTab = () => {
                 <MenuItem value={VectorialMethodEnum.TF_IDF}>
                   Frecuencia de Termino (TF_IDF)
                 </MenuItem>
-                <MenuItem value={VectorialMethodEnum.PROBABILISTIC}>Probabilistico</MenuItem>
+                <MenuItem value={VectorialMethodEnum.PROBABILISTIC}>
+                  Probabilistico (POR TERMINAR)
+                </MenuItem>
               </Select>
             )}
           />

@@ -281,7 +281,7 @@ export function similitud5(
   }
 
   console.log('ci final', ci)
-  const ciSimFinal: number[] = documentsWeigth.map((document) => {
+  const ciSimFinal: number[] = transformToOnesMatrix(documentsWeigth).map((document) => {
     return document.reduce((sum, docItem, j) => sum + queryWeight[j] * docItem * Number(ci[j]), 0)
   })
 
