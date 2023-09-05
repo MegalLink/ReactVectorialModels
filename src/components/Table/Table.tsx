@@ -11,7 +11,7 @@ import { Box, CircularProgress, Container, Typography } from '@mui/material'
 
 interface CustomTableProps {
   header: string[]
-  data: number[] | number[][]
+  data: any[] | any[][]
   title: string
 }
 
@@ -25,8 +25,6 @@ export const CustomTable: React.FC<CustomTableProps> = ({ header, title, data })
       </Box>
     )
   }
-  console.log('header outside', header)
-  console.log('rows outside', data)
 
   return (
     <Container

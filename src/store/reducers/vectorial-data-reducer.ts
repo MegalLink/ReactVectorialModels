@@ -13,11 +13,14 @@ export const initialState: VectorialDataAppState = {
     vocabulary: [],
     queryWeight: [],
     documentsWeigth: [],
+    originalDocuments: [],
   },
   tab: TabEnum.INPUT,
   outputData: {
-    weightMatrix: [],
-    result:[],
+    documentsWeight: [],
+    queryWeight: [],
+    result: [],
+    realimentedResult: [],
     time: 0,
   },
 }

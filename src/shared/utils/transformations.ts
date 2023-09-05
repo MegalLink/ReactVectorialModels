@@ -5,11 +5,14 @@ export interface PreparedVectorialData {
   vocabulary: string[]
   queryWeight: number[]
   documentsWeigth: number[][]
+  originalDocuments: string[][]
 }
 
 export interface MethodResults {
-  weightMatrix: number[][]
+  documentsWeight: number[][]
+  queryWeight: number[]
   result: number[]
+  realimentedResult?: number[]
   time: number
 }
 
@@ -57,6 +60,7 @@ export function vectorialModelPrepare(
     }
     keys = Array.from(wordsMap.keys())
   }
+  keys = keys.sort()
 
   const documentsToWeigth = filteredDocuments.map((row) => {
     return toWeightConverter(row, keys)
@@ -65,7 +69,12 @@ export function vectorialModelPrepare(
 
   const queryToWeigth = toWeightConverter(query, keys)
 
-  return { vocabulary: keys, queryWeight: queryToWeigth, documentsWeigth: documentsToWeigth }
+  return {
+    vocabulary: keys,
+    queryWeight: queryToWeigth,
+    documentsWeigth: documentsToWeigth,
+    originalDocuments: docs,
+  }
 }
 
 export function prepareStringToArray(input: string | undefined, separator: string): string[] {
@@ -101,7 +110,7 @@ export function similitud1(queryWeight: number[], documentsWeigth: number[][]): 
   }
   console.log('result similitud1', result)
 
-  return { weightMatrix: onesDocumentWeight, result: result, time: 0 }
+  return { documentsWeight: onesDocumentWeight, result: result, time: 0, queryWeight: queryWeight }
 }
 
 export function similitud2(queryWeight: number[], documentsWeigth: number[][]): MethodResults {
@@ -122,7 +131,7 @@ export function similitud2(queryWeight: number[], documentsWeigth: number[][]): 
     result.push(total)
     console.log('document:', i, 'similitud:', total)
   }
-  return { weightMatrix: onesDocumentWeight, result: result, time: 0 }
+  return { documentsWeight: onesDocumentWeight, result: result, time: 0, queryWeight: queryWeight }
 }
 
 function getModuleOfVector(array: number[]): number {
@@ -149,7 +158,7 @@ export function similitud3(queryWeight: number[], documentsWeigth: number[][]): 
     result.push(total)
     console.log('document:', i, 'similitud:', total)
   }
-  return { weightMatrix: onesDocumentWeight, result: result, time: 0 }
+  return { documentsWeight: onesDocumentWeight, result: result, time: 0, queryWeight: queryWeight }
 }
 
 function calculateNi(documentsWeigth: number[][]): number[] {
@@ -189,7 +198,8 @@ export function similitud4(queryWeight: number[], documentsWeigth: number[][]): 
     result.push(total)
     console.log('document:', i, 'similitud:', total)
   }
-  return { weightMatrix: newWeights, result: result, time: 0 }
+
+  return { documentsWeight: newWeights, result: result, time: 0, queryWeight: queryWeight }
 }
 
 function sumColumns(matrix: number[][]): number[] {
@@ -286,7 +296,100 @@ export function similitud5(
 
   console.log('Similitud', ciSimFinal)
   // TODO CONSIDER PRINT OTHER RESULTS
-  return { weightMatrix: documentsWeigth, result: ciSimFinal, time: 0 }
+  return { documentsWeight: documentsWeigth, result: ciSimFinal, time: 0, queryWeight: queryWeight }
+}
+
+export function normalizeVector(v: number[]) {
+  const module = getModuleOfVector(v)
+
+  return v.map((value) => value / module)
+}
+
+export function relationDocumentsWithQuery(documentsWeight: number[][], queryWeight: number[]) {
+  const mq = getModuleOfVector(queryWeight)
+  const result: number[] = []
+  for (let i = 0; i < documentsWeight.length; i++) {
+    let qdi = 0
+    for (let j = 0; j < queryWeight.length; j++) {
+      qdi += queryWeight[j] * documentsWeight[i][j]
+    }
+
+    const mdi = getModuleOfVector(documentsWeight[i])
+    const total = qdi / (mdi * mq)
+    result.push(total)
+  }
+  return result
+}
+
+export function tfIDFNormalized(queryWeight: number[], documentsWeigth: number[][]): MethodResults {
+  const N = documentsWeigth.length
+  const ni: number[] = calculateNi(documentsWeigth)
+
+  const idf = ni.map((niValue) => {
+    return Math.log10(N / niValue)
+  })
+
+  const idfDocuments = documentsWeigth.map((document) => {
+    return document.map((value, j) => {
+      return value * idf[j]
+    })
+  })
+
+  const idfq = queryWeight.map((value, j) => {
+    return value * idf[j]
+  })
+
+  const documentsNormalized = idfDocuments.map((row) => normalizeVector(row))
+  const queryNormalized = normalizeVector(idfq)
+  const result = relationDocumentsWithQuery(documentsNormalized, queryNormalized)
+
+  return {
+    documentsWeight: documentsNormalized,
+    queryWeight: queryNormalized,
+    result: result,
+    time: 0,
+  }
+}
+
+function addMatrixRows(m: number[][]): number[] {
+  const rowSum = []
+  for (let i = 0; i < m.length; i++) {
+    for (let j = 0; j < m[i].length; j++) {
+      const addValue: number = rowSum[j] === undefined ? 0 : rowSum[j]
+      rowSum[j] = addValue + m[i][j]
+    }
+  }
+  return rowSum
+}
+
+function rochio(
+  result: MethodResults,
+  relevantIndex: number[],
+  noRelevantIndex: number[],
+  alfa = 1,
+  beta = 0.75,
+  ro = 0.25,
+): number[] {
+  const relevantDocuments: number[][] = relevantIndex.map((index) => result.documentsWeight[index])
+  const noRelevantDocuments: number[][] = noRelevantIndex.map(
+    (index) => result.documentsWeight[index],
+  )
+
+  console.log('relevant documents', relevantDocuments)
+  console.log('no relevant documents', noRelevantDocuments)
+
+  const a: number[] = result.queryWeight.map((value) => value * alfa)
+  const b: number[] = addMatrixRows(relevantDocuments).map(
+    (row) => (beta / relevantDocuments.length) * row,
+  )
+
+  const c: number[] = addMatrixRows(noRelevantDocuments).map(
+    (row) => (ro / noRelevantDocuments.length) * row * -1,
+  )
+
+  const rochioResult = addMatrixRows([a, b, c])
+
+  return rochioResult.map((value) => (value < 0 ? 0 : value))
 }
 
 export function selectMethod(
@@ -294,7 +397,7 @@ export function selectMethod(
   method: VectorialMethodEnum,
 ): MethodResults {
   const startTime = new Date().getTime()
-  let result: MethodResults = { weightMatrix: [], result: [], time: 0 }
+  let result: MethodResults = { documentsWeight: [], result: [], time: 0, queryWeight: [] }
 
   switch (method) {
     case VectorialMethodEnum.BASIC:
@@ -307,14 +410,25 @@ export function selectMethod(
       result = similitud3(input.queryWeight, input.documentsWeigth)
       break
     case VectorialMethodEnum.TF_IDF:
-      result = similitud4(input.queryWeight, input.documentsWeigth)
-      break
-    case VectorialMethodEnum.PROBABILISTIC:
-      // TODO SEND NUMBER R FROM INPUT
-      result = similitud5(input.queryWeight, input.documentsWeigth, 3)
+      result = tfIDFNormalized(input.queryWeight, input.documentsWeigth)
       break
   }
   const endTime = new Date().getTime() - startTime
 
   return { ...result, time: endTime }
+}
+
+export function resultWithFeedback(
+  result: MethodResults,
+  relevantDocumentsIndex: number[],
+  noRelevantDocumentsIndex: number[],
+): MethodResults {
+  // pesudo realimentacion
+  const qPrime = rochio(result, relevantDocumentsIndex, noRelevantDocumentsIndex)
+  console.log('prime2', qPrime)
+  console.log('result first iteration', result)
+  const realimentedResult = relationDocumentsWithQuery(result.documentsWeight, qPrime)
+
+  console.log('similitud pseudo realimentacion', realimentedResult)
+  return { ...result, result: realimentedResult }
 }

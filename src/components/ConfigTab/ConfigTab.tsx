@@ -1,5 +1,4 @@
 import {
-  Box,
   Container,
   FormControl,
   InputLabel,
@@ -79,9 +78,9 @@ export const ConfigTab = () => {
                 <MenuItem value={VectorialMethodEnum.TF_IDF}>
                   Frecuencia de Termino (TF_IDF)
                 </MenuItem>
-                <MenuItem value={VectorialMethodEnum.PROBABILISTIC}>
+                {/* <MenuItem value={VectorialMethodEnum.PROBABILISTIC}>
                   Probabilistico (POR TERMINAR)
-                </MenuItem>
+            </MenuItem>*/}
               </Select>
             )}
           />
