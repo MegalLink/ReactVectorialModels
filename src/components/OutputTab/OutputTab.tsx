@@ -1,5 +1,18 @@
 import React, { useState } from 'react'
-import { Button, Chip, Container, FormControlLabel, Paper, Switch, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Chip,
+  Container,
+  FormControlLabel,
+  Modal,
+  Paper,
+  Switch,
+  Typography,
+} from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../store/store-hook'
 import { CustomTable } from '../Table/Table'
 import { setOutputData } from '../../store/reducers/vectorial-data-reducer'
@@ -21,6 +34,8 @@ export const OutputTab = () => {
   const querySolved: any[][] = [[...inputData.queryWeight]]
   const data = prepareData(inputData.originalDocuments, modelResult)
   const [relevantDocumentsIndex, setRelevantDocumentsIndex] = useState<number[]>([])
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [modalContent, setModalContent] = useState('')
 
   const handleSwitchCHange = (e: React.ChangeEvent<HTMLInputElement>, elementIndex: number) => {
     if (e.target.checked) {
@@ -46,9 +61,15 @@ export const OutputTab = () => {
     dispatch(setOutputData(newOutputData))
   }
 
-  const showDocumentModal = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+  const showDocumentModal = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>, content: string) => {
     e.preventDefault()
-    console.log(e)
+    setModalContent(content)
+    setIsOpenModal(true)
+  }
+
+  const closeModal = () => {
+    setIsOpenModal(false)
+    setModalContent('')
   }
 
   function prepareData(documents: string[][], result: any[]): any[] {
@@ -56,7 +77,7 @@ export const OutputTab = () => {
       const documentContent = row.join(' ')
       const rowResult = [
         result[index],
-        <Typography key={index} onClick={(e) => showDocumentModal(e)}>
+        <Typography key={index} onClick={(e) => showDocumentModal(e, documentContent)}>
           {documentContent}
         </Typography>,
         <FormControlLabel
@@ -115,6 +136,27 @@ export const OutputTab = () => {
           </Button>
         )}
       </Paper>
+      <Modal
+        open={isOpenModal}
+        onClose={closeModal}
+        aria-labelledby='parent-modal-title'
+        aria-describedby='parent-modal-description'
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Card sx={{ minWidth: 400 }}>
+          <CardContent>
+            <Typography variant='h5' color='text.primary' gutterBottom>
+              Contenido de documento
+            </Typography>
+            <Typography component='div'>{modalContent}</Typography>
+          </CardContent>
+          <CardActions>
+            <Button size='small' onClick={closeModal}>
+              Cerrar
+            </Button>
+          </CardActions>
+        </Card>
+      </Modal>
     </Container>
   )
 }
